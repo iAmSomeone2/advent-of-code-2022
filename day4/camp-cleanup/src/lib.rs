@@ -37,7 +37,10 @@ impl SectionAssignment {
             true
         } else if pair[1].start >= pair[0].start && pair[1].start <= pair[0].end {
             true
-        // TODO: figure out remaining branches
+        } else if pair[0].end <= pair[1].end && pair[0].end >= pair[1].start {
+            true
+        } else if pair[1].end <= pair[0].end && pair[1].end >= pair[0].start {
+            true
         } else {
             false
         }
@@ -74,7 +77,7 @@ mod test {
         }
 
         #[test]
-        fn overlap() {
+        fn full_overlap() {
             let input_data = [("2-4,6-8", false), ("4-8,1-9", true), ("1-9,4-8", true)];
 
             for data in input_data {
@@ -82,6 +85,26 @@ mod test {
                 assert_eq!(
                     data.1,
                     SectionAssignment::has_full_overlap(&assignment_pair)
+                );
+            }
+        }
+
+        #[test]
+        fn partial_overlap() {
+            let input_data = [
+                ("2-4,6-8", false),
+                ("4-8,1-9", true),
+                ("1-9,4-8", true),
+                ("5-7,7-9", true),
+                ("2-6,4-8", true),
+                ("4-8,2-6", true),
+            ];
+
+            for data in input_data {
+                let assignment_pair = SectionAssignment::pair_from_line(data.0);
+                assert_eq!(
+                    data.1,
+                    SectionAssignment::has_partial_overlap(&assignment_pair)
                 );
             }
         }

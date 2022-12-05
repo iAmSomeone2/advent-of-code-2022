@@ -9,12 +9,17 @@ fn main() {
         assignment_groups.push(SectionAssignment::pair_from_line(line));
     }
 
-    let mut total_overlap = 0;
+    let mut full_overlap = 0;
+    let mut partial_overlap = 0;
     for pair in assignment_groups {
         if SectionAssignment::has_full_overlap(&pair) {
-            total_overlap += 1;
+            full_overlap += 1;
+        }
+        if SectionAssignment::has_partial_overlap(&pair) {
+            partial_overlap += 1;
         }
     }
 
-    println!("{}", total_overlap);
+    println!("Full overlap: {}", full_overlap);
+    println!("Partial overlap: {}", partial_overlap);
 }
