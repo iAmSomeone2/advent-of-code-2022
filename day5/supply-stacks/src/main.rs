@@ -1,4 +1,4 @@
-use std::env;
+use clap::{Arg, ArgAction, Command};
 use std::fs;
 use supply_stacks::{MoveInstruction, Stack};
 
@@ -26,10 +26,23 @@ fn split_input(input_data: &String) -> (Vec<&str>, Vec<&str>) {
 }
 
 fn main() {
-    let args: Vec<String> = env::args().collect();
-    
+    let cfg = Command::new("Supply Stacks Simulator")
+        .author("Brenden Davidson")
+        .version("0.1.0")
+        .about("Advent of Code 2022: Day 5 solution")
+        .args([
+            Arg::new("input")
+                .short('i')
+                .long("input")
+                .action(ArgAction::Set)
+                .required(true)
+                .help("the input file to use"),
+            Arg::new(""),
+        ])
+        .get_matches();
 
-    let input_data = fs::read_to_string("input.txt").expect("Failed to read input file");
+    let input_path = cfg.get_one::<&str>("input").unwrap();
+    let input_data = fs::read_to_string(input_path).expect("Failed to read input file");
 
     let input_data = split_input(&input_data);
 
