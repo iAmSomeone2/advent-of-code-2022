@@ -1,3 +1,4 @@
+use std::env;
 use std::fs;
 use supply_stacks::{MoveInstruction, Stack};
 
@@ -25,6 +26,9 @@ fn split_input(input_data: &String) -> (Vec<&str>, Vec<&str>) {
 }
 
 fn main() {
+    let args: Vec<String> = env::args().collect();
+    
+
     let input_data = fs::read_to_string("input.txt").expect("Failed to read input file");
 
     let input_data = split_input(&input_data);
@@ -32,7 +36,7 @@ fn main() {
     let mut stacks = Stack::from_lines(&input_data.0);
     for line in input_data.1 {
         let move_instruction = MoveInstruction::from_string(line);
-        move_instruction.execute(&mut stacks, false);
+        move_instruction.execute_v2(&mut stacks, true);
     }
 
     let mut tops = String::new();

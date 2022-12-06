@@ -41,6 +41,17 @@ impl MoveInstruction {
         }
     }
 
+    fn print(&self) {
+        let mut inst_str = String::from("move ");
+        inst_str.push_str(self.count.to_string().as_str());
+        inst_str.push_str(" from ");
+        inst_str.push_str(self.src_idx.to_string().as_str());
+        inst_str.push_str(" to ");
+        inst_str.push_str(self.target_idx.to_string().as_str());
+
+        println!("{}", inst_str);
+    }
+
     /// Execute a move instruction on a set of Stacks
     pub fn execute(&self, stacks: &mut Vec<Stack>, print_step: bool) {
         // Repeat 'count' amount of times
@@ -52,6 +63,30 @@ impl MoveInstruction {
         }
 
         if print_step {
+            self.print();
+            Stack::print(stacks);
+        }
+    }
+
+    pub fn execute_v2(&self, stacks: &mut Vec<Stack>, print_step: bool) {
+        // Use a temp vector to be the "crane arm"
+        let mut crane_arm = vec![];
+        for _ in 0..self.count {
+            // Pop a crate off of the source stack
+            let pop_crate = stacks[self.src_idx - 1].crates.pop().unwrap();
+
+            // Push it onto the crane arm
+            crane_arm.push(pop_crate);
+        }
+
+        while !crane_arm.is_empty() {
+            let pop_crate = crane_arm.pop().unwrap();
+
+            stacks[self.target_idx - 1].crates.push(pop_crate);
+        }
+
+        if print_step {
+            self.print();
             Stack::print(stacks);
         }
     }
