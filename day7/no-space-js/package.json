@@ -1,0 +1,11 @@
+{
+  "name": "no-space-js",
+  "version": "1.0.0",
+  "main": "index.mjs",
+  "license": "MIT",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "start": "node index.mjs"
+  }
+}
